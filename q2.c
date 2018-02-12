@@ -14,7 +14,6 @@ int enqueue(char *s[]) {
 	history[2] = history[1];
 	history[1] = history[0];
 	history[0] = s;
-	printf("%s\n",history[0]);
 }
 
 
@@ -30,12 +29,16 @@ int main(void) {
 
 		printf("osh>");
 		fgets(str, MAX_LINE, stdin);//get input from user
+		counter++;
 
 		if (strcmp(str, "!!") == 10) {
-			printf("osh>", history[0]);
+			printf("osh>");
+			printf("%s\n", history[2]);
+		} else {
+			enqueue(str);
+			printf("%s\n",history[2]);
 		}
 
-		enqueue(str);
 
 		if (strcmp(str, "exit") == 10) {
 			should_run = 0;
@@ -63,7 +66,7 @@ int main(void) {
 	            j++; //next letter
 	        }
 	    }
-
+/*
 		pid_t pid;
 		pid = fork();
 
@@ -78,6 +81,7 @@ int main(void) {
 				wait();//waits for child to complete process
 			}
 		}
+		*/
 
 		fflush(stdout);//cleans the buffer
     }
