@@ -3,9 +3,22 @@
 #include <unistd.h>
 #define MAX_LINE 80 /* The maximum length command */
 
-int main(void) {
 
-	char args[MAX_LINE/2 + 1][MAX_LINE]; /* command line arguments */
+int counter = 0; //Keeps track of number of commands issued
+char * history[5];//Stores lat 5 commands
+char args[MAX_LINE/2 + 1][MAX_LINE]; /* command line arguments */
+
+int enqueue(char *s[]) {
+	history[4] = history[3];
+	history[3] = history[2];
+	history[2] = history[1];
+	history[1] = history[0];
+	history[0] = s;
+	printf("%s\n",history[0]);
+}
+
+
+int main(void) {
 	int should_run = 1; /* flag to determine when to exit program */
 	int concurrent; //0 = not conccurent execution
 
@@ -16,8 +29,13 @@ int main(void) {
 		int k;//word index for sentence
 
 		printf("osh>");
-		fgets(str, MAX_LINE, stdin);
+		fgets(str, MAX_LINE, stdin);//get input from user
 
+		if (strcmp(str, "!!") == 10) {
+			printf("osh>", history[0]);
+		}
+
+		enqueue(str);
 
 		if (strcmp(str, "exit") == 10) {
 			should_run = 0;
@@ -41,8 +59,8 @@ int main(void) {
 				if(str[i] == '&'){//checks for & to determine if it is to be concurrently run
 					concurrent = 1;
 				}
-	            args[k][j]=str[i];
-	            j++;
+	            args[k][j]=str[i];//assigns letter to word
+	            j++; //next letter
 	        }
 	    }
 
@@ -55,7 +73,7 @@ int main(void) {
 		else { //Parent waits for child to execute first
 			if (pid == 0) {
 				execvp(args[0], args);
-				exit(1);
+				exit(1);//child terminates
 			} else {
 				wait();//waits for child to complete process
 			}
