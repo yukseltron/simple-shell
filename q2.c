@@ -24,11 +24,13 @@ int enqueue(char *s[]) {
 	strcpy(history[4],temp2);
 
 
+	
 	printf("2 %s\n", history[0]);
 	printf("3 %s\n", history[1]);
 	printf("4 %s\n", history[2]);
 	printf("5 %s\n", history[3]);
 	printf("6 %s\n", history[4]);
+
 }
 
 
@@ -46,21 +48,14 @@ int main(void) {
 		fgets(str, MAX_LINE, stdin);//get input from user
 		counter++;
 
-		printf("%s\n","---");
-		printf("%s\n",history[0]);
-		printf("%s\n",history[1]);
-		printf("%s\n",history[2]);
-		printf("%s\n",history[3]);
-		printf("%s\n",history[4]);
-		printf("%s\n","---");
-
 		if (strcmp(str, "!!") == 10) {
 			printf("osh>");
-		//	printf("%s\n", history[0]);
+			printf("%s\n", history[0]);
+			strcpy(str,history[0]);
 			enqueue(str);
 		} else {
 			enqueue(str);
-			//printf("%s\n",&history[0]);
+			printf("%s\n", history[0]);
 		}
 
 
