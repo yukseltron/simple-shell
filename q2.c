@@ -5,41 +5,30 @@
 
 
 int counter = 0; //Keeps track of number of commands issued
-char *history[5] = {"", "", "", "", "", ""};//Stores lat 5 commands
+char *history[5][MAX_LINE];//Stores lat 5 commands
 char args[MAX_LINE/2 + 1][MAX_LINE]; /* command line arguments */
 
 int enqueue(char *s[]) {
-	/*
-	char temp[MAX_LINE];
-	temp = history[3];
-	history[4] = temp;
-	temp[0] = history[2];
-	history[3] = temp;
-	temp[0] = history[1];
-	history[2] = temp;
-	temp[0] = history[0];
-	history[1] = temp;
-	history[0] = s;
-	*/
 	char *temp1[MAX_LINE];
 	char *temp2[MAX_LINE];
 
+
 	strcpy(temp1, history[0]);
-	history[0] = s;
+	strcpy(history[0], s);
 	strcpy(temp2,history[1]);
-	history[1] = temp1;
+	strcpy(history[1],temp1);
 	strcpy(temp1,history[2]);
-	history[2] = temp2;
+	strcpy(history[2],temp2);
 	strcpy(temp2,history[3]);
-	history[3] = temp1;
-	//strcpy(temp1,history[4]);
-	history[4] = temp2;
-
-
+	strcpy(history[3],temp1);
+	strcpy(history[4],temp2);
 
 
 	printf("2 %s\n", history[0]);
 	printf("3 %s\n", history[1]);
+	printf("4 %s\n", history[2]);
+	printf("5 %s\n", history[3]);
+	printf("6 %s\n", history[4]);
 }
 
 
