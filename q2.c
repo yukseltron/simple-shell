@@ -5,15 +5,41 @@
 
 
 int counter = 0; //Keeps track of number of commands issued
-char * history[5];//Stores lat 5 commands
+char *history[5] = {"", "", "", "", "", ""};//Stores lat 5 commands
 char args[MAX_LINE/2 + 1][MAX_LINE]; /* command line arguments */
 
 int enqueue(char *s[]) {
-	history[4] = history[3];
-	history[3] = history[2];
-	history[2] = history[1];
-	history[1] = history[0];
+	/*
+	char temp[MAX_LINE];
+	temp = history[3];
+	history[4] = temp;
+	temp[0] = history[2];
+	history[3] = temp;
+	temp[0] = history[1];
+	history[2] = temp;
+	temp[0] = history[0];
+	history[1] = temp;
 	history[0] = s;
+	*/
+	char *temp1[MAX_LINE];
+	char *temp2[MAX_LINE];
+
+	strcpy(temp1, history[0]);
+	history[0] = s;
+	strcpy(temp2,history[1]);
+	history[1] = temp1;
+	strcpy(temp1,history[2]);
+	history[2] = temp2;
+	strcpy(temp2,history[3]);
+	history[3] = temp1;
+	//strcpy(temp1,history[4]);
+	history[4] = temp2;
+
+
+
+
+	printf("2 %s\n", history[0]);
+	printf("3 %s\n", history[1]);
 }
 
 
@@ -31,12 +57,21 @@ int main(void) {
 		fgets(str, MAX_LINE, stdin);//get input from user
 		counter++;
 
+		printf("%s\n","---");
+		printf("%s\n",history[0]);
+		printf("%s\n",history[1]);
+		printf("%s\n",history[2]);
+		printf("%s\n",history[3]);
+		printf("%s\n",history[4]);
+		printf("%s\n","---");
+
 		if (strcmp(str, "!!") == 10) {
 			printf("osh>");
-			printf("%s\n", history[2]);
+		//	printf("%s\n", history[0]);
+			enqueue(str);
 		} else {
 			enqueue(str);
-			printf("%s\n",history[2]);
+			//printf("%s\n",&history[0]);
 		}
 
 
