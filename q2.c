@@ -1,3 +1,6 @@
+//Ben Giller 400008188
+//Hamid Yuksel 400008682
+
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -8,7 +11,7 @@ int counter = 0; //Keeps track of number of commands issued
 char *history[5][MAX_LINE];//Stores lat 5 commands
 char args[MAX_LINE/2 + 1][MAX_LINE]; /* command line arguments */
 
-int enqueue(char *s[]) {
+int enqueue(char *s[]) {//Pushes onto array. Array acts as a queue
 	char *temp1[MAX_LINE];
 	char *temp2[MAX_LINE];
 
@@ -23,14 +26,14 @@ int enqueue(char *s[]) {
 	strcpy(history[3],temp1);
 	strcpy(history[4],temp2);
 
+}
 
-	
-	printf("2 %s\n", history[0]);
-	printf("3 %s\n", history[1]);
-	printf("4 %s\n", history[2]);
-	printf("5 %s\n", history[3]);
-	printf("6 %s\n", history[4]);
-
+void printHistory() {
+	printf("1 %s\n", history[0]);
+	printf("2 %s\n", history[1]);
+	printf("3 %s\n", history[2]);
+	printf("4 %s\n", history[3]);
+	printf("5 %s\n", history[4]);
 }
 
 
@@ -39,25 +42,44 @@ int main(void) {
 	int concurrent; //0 = not conccurent execution
 
 	while (should_run == 1) { //Takes command and parses into array for manipulation
-		char str[100];
+		char str[MAX_LINE];
 		int i;//used as looping index
 		int j;//letter index for a word
 		int k;//word index for sentence
+		int c;
 
 		printf("osh>");
 		fgets(str, MAX_LINE, stdin);//get input from user
 		counter++;
+
 
 		if (strcmp(str, "!!") == 10) {
 			printf("osh>");
 			printf("%s\n", history[0]);
 			strcpy(str,history[0]);
 			enqueue(str);
+			execvp(args[0], args);
+		}	else if (str[0] == '!' && str[1] != '!') { //Checks for ! and N
+				for(i=1;i<(strlen(str));i++)
+				{
+					if(isdigit(str[i])) //Finds digit after !
+					{
+						c = str[i];
+						if ((c-49) >= 0 && (c-49) <= 5) {
+							printf("osh>");
+							printf("%s\n", history[c-49]);
+							strcpy(str,history[c-49]);
+							enqueue(str);
+							execvp(args[0], args);
+							break;
+						}
+					}
+				}
+		} else if (strcmp(str, "history") == 10) {//prints history
+				printHistory();
 		} else {
 			enqueue(str);
-			printf("%s\n", history[0]);
 		}
-
 
 		if (strcmp(str, "exit") == 10) {
 			should_run = 0;
@@ -85,7 +107,7 @@ int main(void) {
 	            j++; //next letter
 	        }
 	    }
-/*
+
 		pid_t pid;
 		pid = fork();
 
@@ -100,7 +122,6 @@ int main(void) {
 				wait();//waits for child to complete process
 			}
 		}
-		*/
 
 		fflush(stdout);//cleans the buffer
     }
